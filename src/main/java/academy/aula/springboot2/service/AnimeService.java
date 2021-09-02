@@ -1,6 +1,8 @@
 package academy.aula.springboot2.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,11 @@ import academy.aula.springboot2.repository.AnimeRepository;
 public class AnimeService {
 
 
-    private List<Anime> animes = List.of(new Anime(1L,"DBZ"), new Anime(2L,"Bersek"));
+    private static List<Anime> animes;
+
+    static{
+        animes = new ArrayList<>(List.of(new Anime(1L,"DBZ"), new Anime(2L,"Bersek")));
+    }
 
     // private final AnimeRepository animeRepository;
     public List<Anime> listAll(){
@@ -26,6 +32,14 @@ public class AnimeService {
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found"));
                 
+    }
+
+    public Anime save(Anime anime) {
+
+        anime.setId(ThreadLocalRandom.current().nextLong(3, 1000000));
+        animes.add(anime);
+        return anime;
+
     }
     
 }
