@@ -2,7 +2,6 @@ package academy.aula.springboot2.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import academy.aula.springboot2.service.AnimeService;
 import academy.aula.springboot2.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-
 @RestController
 @RequestMapping("animes")
 @Log4j2

@@ -1,9 +1,6 @@
 package academy.aula.springboot2.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -50,5 +47,7 @@ public class AnimeService {
         
         animeRepository.save(anime);
     }
+
+    
     
 }

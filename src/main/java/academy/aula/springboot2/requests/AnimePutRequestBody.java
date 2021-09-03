@@ -1,7 +1,4 @@
 package academy.aula.springboot2.requests;
-
-import java.util.UUID;
-
 import lombok.Data;
 
 @Data
