@@ -18,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 public class SpringClient {
     
     public static void main(String[] args) {
+        
         ResponseEntity<Anime> entity = new RestTemplate().getForEntity("http://localhost:8080/animes/{id}", Anime.class, 2); 
         log.info(entity);
 
