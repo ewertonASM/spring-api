@@ -16,7 +16,4 @@ public class DevDojoWebMvcConfigurer implements WebMvcConfigurer{
        PageableHandlerMethodArgumentResolver pageHandler = new PageableHandlerMethodArgumentResolver();
        pageHandler.setFallbackPageable(PageRequest.of(0, 5));
     }
-
-    
-    
 }
