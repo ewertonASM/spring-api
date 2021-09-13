@@ -4,8 +4,8 @@ import academy.devdojo.springboot2.domain.Anime;
 import academy.devdojo.springboot2.exception.BadRequestException;
 import academy.devdojo.springboot2.mapper.AnimeMapper;
 import academy.devdojo.springboot2.repository.AnimeRepository;
-import academy.devdojo.springboot2.requests.AnimePostRequestBody;
-import academy.devdojo.springboot2.requests.AnimePutRequestBody;
+import academy.devdojo.springboot2.dto.AnimePostDTO;
+import academy.devdojo.springboot2.dto.AnimePutDTO;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -38,17 +38,17 @@ public class AnimeService {
     }
 
     @Transactional
-    public Anime save(AnimePostRequestBody animePostRequestBody) {
-        return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
+    public Anime save(AnimePostDTO animePostDTO) {
+        return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostDTO));
     }
 
     public void delete(Long id) {
         animeRepository.delete(findByIdOrThrowBadRequestException(id));
     }
 
-    public void replace(AnimePutRequestBody animePutRequestBody) {
-        Anime savedAnime = findByIdOrThrowBadRequestException(animePutRequestBody.getId());
-        Anime anime = AnimeMapper.INSTANCE.toAnime(animePutRequestBody);
+    public void replace(AnimePutDTO animePutDTO) {
+        Anime savedAnime = findByIdOrThrowBadRequestException(animePutDTO.getId());
+        Anime anime = AnimeMapper.INSTANCE.toAnime(animePutDTO);
         anime.setId(savedAnime.getId());
         animeRepository.save(anime);
     }
