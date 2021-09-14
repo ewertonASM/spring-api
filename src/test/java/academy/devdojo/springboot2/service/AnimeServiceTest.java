@@ -19,13 +19,10 @@ import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import academy.devdojo.springboot2.domain.Anime;
-import academy.devdojo.springboot2.dto.AnimePostDTO;
-import academy.devdojo.springboot2.dto.AnimePutDTO;
+import academy.devdojo.springboot2.exception.BadRequestException;
 import academy.devdojo.springboot2.repository.AnimeRepository;
 import academy.devdojo.springboot2.service.AnimeService;
 import academy.devdojo.springboot2.util.AnimeCreator;
@@ -46,7 +43,7 @@ public class AnimeServiceTest {
         BDDMockito.when(animeRepositoryMock.findAll(ArgumentMatchers.any(PageRequest.class)))
                 .thenReturn(animePage);
 
-        BDDMockito.when(animeRepositoryMock.findAll ())
+        BDDMockito.when(animeRepositoryMock.findAll())
                 .thenReturn(List.of(AnimeCreator.createValidAnime()));
 
         BDDMockito.when(animeRepositoryMock.findById(ArgumentMatchers.anyLong()))
@@ -58,15 +55,14 @@ public class AnimeServiceTest {
         BDDMockito.when(animeRepositoryMock.save(ArgumentMatchers.any(Anime.class)))
                 .thenReturn(AnimeCreator.createValidAnime());
 
-
-        BDDMockito.doNothing().when(animeRepositoryMock).delete(ArgumentMatchers.any(Anime.class ));
+        BDDMockito.doNothing().when(animeRepositoryMock).delete(ArgumentMatchers.any(Anime.class));
     }
     @Test
     @DisplayName("listAll returns list of anime inside page object when successful")
     void listAll_ReturnsListOfAnimesInsidePageObject_WhenSuccessful(){
         String expectedName = AnimeCreator.createValidAnime().getName();
 
-        Page<Anime> animePage = animeService.listAll(PageRequest.of(1, 1 ));
+        Page<Anime> animePage = animeService.listAll(PageRequest.of(1,1));
 
         Assertions.assertThat(animePage).isNotNull();
 
@@ -105,6 +101,16 @@ public class AnimeServiceTest {
     }
 
     @Test
+    @DisplayName("findByIdOrThrowBadRequestException throws BadRequestException when anime is not found")
+    void findByIdOrThrowBadRequestException_ThrowsBadRequestException_WhenAnimeIsNotFound(){
+        BDDMockito.when(animeRepositoryMock.findById(ArgumentMatchers.anyLong()))
+                .thenReturn(Optional.empty());
+
+        Assertions.assertThatExceptionOfType(BadRequestException.class)
+                .isThrownBy(() -> animeService.findByIdOrThrowBadRequestException(1L));
+    }
+
+    @Test
     @DisplayName("findByName returns a list of anime when successful")
     void findByName_ReturnsListOfAnime_WhenSuccessful(){
         String expectedName = AnimeCreator.createValidAnime().getName();
@@ -125,7 +131,7 @@ public class AnimeServiceTest {
         BDDMockito.when(animeRepositoryMock.findByName(ArgumentMatchers.anyString()))
                 .thenReturn(Collections.emptyList());
 
-        List<Anime> animes = animeService.findByName("anime") ;
+        List<Anime> animes = animeService.findByName("anime");
 
         Assertions.assertThat(animes)
                 .isNotNull()
@@ -147,7 +153,7 @@ public class AnimeServiceTest {
     @DisplayName("replace updates anime when successful")
     void replace_UpdatesAnime_WhenSuccessful(){
 
-        Assertions.assertThatCode(() -> animeService.replace(AnimePutDTOCreator.createAnimePutDTO()))
+        Assertions.assertThatCode(() ->animeService.replace(AnimePutDTOCreator.createAnimePutDTO()))
                 .doesNotThrowAnyException();
 
     }
@@ -156,9 +162,8 @@ public class AnimeServiceTest {
     @DisplayName("delete removes anime when successful")
     void delete_RemovesAnime_WhenSuccessful(){
 
-        Assertions.assertThatCode(() -> animeService.delete(1L))
+        Assertions.assertThatCode(() ->animeService.delete(1L))
                 .doesNotThrowAnyException();
 
     }
-    
 }
